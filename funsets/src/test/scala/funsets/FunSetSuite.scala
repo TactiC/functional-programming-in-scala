@@ -29,10 +29,10 @@ class FunSetSuite extends FunSuite {
   /**
    * Tests are written using the "test" operator and the "assert" method.
    */
-  // test("string take") {
-  //   val message = "hello, world"
-  //   assert(message.take(5) == "hello")
-  // }
+   test("string take") {
+     val message = "hello, world"
+     assert(message.take(5) == "hello")
+   }
 
   /**
    * For ScalaTest tests, there exists a special equality operator "===" that
@@ -43,9 +43,9 @@ class FunSetSuite extends FunSuite {
    * Try it out! Change the values so that the assertion fails, and look at the
    * error message.
    */
-  // test("adding ints") {
-  //   assert(1 + 2 === 3)
-  // }
+   test("adding ints") {
+     assert(1 + 2 === 3)
+   }
 
 
   import FunSets._
@@ -77,6 +77,7 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s42 = singletonSet(42)
   }
 
   /**
@@ -110,5 +111,61 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersection contains common elements only") {
+    new TestSets {
+      val u1 = union(s1, s2)
+      val u2 = union(s1, s3)
+      val i = intersect(u1, u2)
+      assert(contains(i, 1), "intersect 1")
+      assert(!contains(i, 2), "intersect 2")
+      assert(!contains(i, 3), "intersect 3")
+    }
+  }
 
+  test("diff returns only elements from set A not in set B") {
+    new TestSets {
+      val a = union(s1, s2)
+      val b = union(s2, s3)
+      val d = diff(a, b)
+      assert(contains(d, 1), "diff 1")
+      assert(!contains(d, 2), "diff 2")
+      assert(!contains(d, 3), "diff 3")
+    }
+  }
+
+  test("filter returns a set with filtered out elements") {
+    new TestSets {
+      val a = Set(1) ++ Set(2) ++ Set(3)
+      val f = filter(a, _ != 2)
+      assert(!contains(f, 2), "filtered out 2")
+    }
+  }
+
+  test("forall...") {
+    new TestSets {
+      val a = Set(1) ++ Set(2) ++ Set(3)
+      assert(forall(a, _ < 4))
+      assert(!forall(a, _ < 2))
+    }
+  }
+
+  test("exists...") {
+    new TestSets {
+      val a = Set(1) ++ Set(2) ++ Set(3)
+      assert(exists(a, _ == 2))
+      assert(!exists(a, _ == 42))
+    }
+  }
+
+  test("map...") {
+    new TestSets {
+      val a = Set(1) ++ Set(2) ++ Set(3)
+      val mapped = map(a, (_ * 2))
+
+      assert(contains(mapped, 2), "map 2")
+      assert(contains(mapped, 4), "map 4")
+      assert(contains(mapped, 6), "map 6")
+      assert(!contains(mapped, 42), "map 42")
+    }
+  }
 }
