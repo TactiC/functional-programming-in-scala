@@ -152,8 +152,8 @@ class FunSetSuite extends FunSuite {
   test("exists...") {
     new TestSets {
       val a = Set(1) ++ Set(2) ++ Set(3)
-      assert(exists(a, _ == 2))
-      assert(!exists(a, _ == 42))
+      assert(exists(a, _ == 2), "exists 2")
+      assert(!exists(a, _ == 42), "exists 42")
     }
   }
 

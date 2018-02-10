@@ -51,4 +51,10 @@ class HuffmanSuite extends FunSuite {
     }
   }
 
+  test("sdfdsfd") {
+    new TestTrees {
+      val foo = makeCodeTree(t1, t2)
+      println(foo)
+    }
+  }
 }
